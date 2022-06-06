@@ -1,0 +1,49 @@
+<%- include("partials/header"); -%>
+    <link rel="stylesheet" href="css/sidebar.css">
+    </head>
+
+    <body id="bootstrap-overrides">
+        <main role="main">
+            <div class="wrapper d-flex align-items-stretch">
+                <%- include("partials/sidebar"); -%>
+                    <!-- Page Content  -->
+                    <div id="content" class="p-4 p-md-5 pt-5">
+                        <div class="container-fluid">
+                          <% var k = 0; for (var i = 0; i < listLength; i++) { %>
+                            <a class="btn fw-bold" data-bs-toggle="collapse" href="#collapseExample<%= i %>" role="button" aria-expanded="false"
+                            aria-controls="collapseExample<%= i %>"><%= list[i] %> </a>
+                            <div class = "table-responsive collapse" id = "collapseExample<%= i %>">
+                                  <table class="table table-bordered fw-bolder w-auto center-block">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">namespace</th>
+                                        <th scope="col">name</th>
+                                        <th scope="col">image</th>
+                                        <th scope="col">IP</th>
+                                        <th scope="col">NodeIP</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <% for (var j = 0; j < pod.reduce((cnt, it) => cnt + (list[i].replace(/'/g, "") === it.NAMESPACE), 0); j++) { %>
+                                        <% if (pod[k].NAMESPACE == list[i]) { %>
+                                      <tr>
+                                        <th scope="row" class="col-1"><%= j + 1 %></th>
+                                        <td class="col-1"><%= pod[k].NAMESPACE %></td>
+                                        <td class="col-3"><%= pod[k].POD_NAME %></td>
+                                        <td class="col-3"><%= pod[k].POD_IMAGE %></td>
+                                        <td class="col-1"><%= pod[k].POD_IP %></td> 
+                                        <td class="col-3"><%= pod[k].NODE_IP %></td>
+                                      </tr>
+                                      <% k++; } } %>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <br>
+                            <% } %>
+                        </div>
+                    </div>
+            </div>
+        </main>
+    </body>
+</html>

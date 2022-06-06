@@ -1,0 +1,41 @@
+<%- include("partials/header"); -%>
+    <link rel="stylesheet" href="css/sidebar.css">
+    </head>
+
+    <body id="bootstrap-overrides">
+        <main role="main">
+            <div class="wrapper d-flex align-items-stretch">
+                <%- include("partials/sidebar"); -%>
+                    <!-- Page Content  -->
+                    <div id="content" class="p-4 p-md-5 pt-5">
+                        <div class="container-fluid">
+                            <div class = "table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">kind</th>
+                                        <th scope="col">name</th>
+                                        <th scope="col">status</th>
+                                        <th scope="col">podnumber</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <% for (var i = 0; i < ns.length; i++) { %>
+                                      <tr>
+                                        <th scope="row" class="col-1"><%= i + 1 %></th>
+                                        <td class="col-3"><%= ns[i].KIND %></td>
+                                        <td class="col-3"><%= ns[i].NAME %></td>
+                                        <td class="col-3"><%= ns[i].STATUS %></td>
+                                        <td class="col-3"><%= ns[i].POD_NUMBER %></td> 
+                                      </tr>
+                                      <% } %>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </main>
+    </body>
+</html>

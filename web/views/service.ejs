@@ -1,0 +1,49 @@
+<%- include("partials/header"); -%>
+    <link rel="stylesheet" href="css/sidebar.css">
+    </head>
+
+    <body id="bootstrap-overrides">
+        <main role="main">
+            <div class="wrapper d-flex align-items-stretch">
+                <%- include("partials/sidebar"); -%>
+                    <!-- Page Content  -->
+                    <div id="content" class="p-4 p-md-5 pt-5">
+                        <div class="container-fluid">
+                            <div class = row>
+                                <table class="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">namespace</th>
+                                        <th scope="col">name</th>
+                                        <th scope="col">type</th>
+                                        <th scope="col">ClusterIP</th>
+                                        <th scope="col">TypeIP</th>
+                                        <th scope="col">PORT</th>
+                                        <th scope="col">NODEPORT</th>
+                                        <th scope="col">Protocol</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <% for (var i = 0; i < service.length; i++) { %>
+                                      <tr>
+                                        <th scope="row" class="col-1"><%= i + 1 %></th>
+                                        <td class="col"><%= service[i].NAMESPACE %></td>
+                                        <td class="col"><%= service[i].NAME %></td>
+                                        <td class="col"><%= service[i].TYPE %></td>
+                                        <td class="col"><%= service[i].CLUSTERIP %></td>
+                                        <td class="col"><%= service[i].TYPEIP %></td>
+                                        <td class="col"><%= service[i].PORT %></td>
+                                        <td class="col"><%= service[i].NODEPORT %></td>
+                                        <td class="col"><%= service[i].PROTOCOL %></td>
+                                      </tr>
+                                      <% } %>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </main>
+    </body>
+</html>
