@@ -5,14 +5,14 @@ permissions:
   pull-requests: write
 on:
   push:
-    branches: [ 'dev', 'master', 'hotfix/*' ]
+    branches: [ dev, master, 'hotfix/*' ]
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
     paths:
       - web/**
   pull_request:
     types: [opened, reopened, synchronize]
-    branches: [dev, dev2, master, main,'hotfix/*']
+    branches: [dev, master, main,'hotfix/*']
     tags-ignore:
       - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
 
