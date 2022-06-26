@@ -8,8 +8,8 @@ on:
     branches: [ dev, master, 'hotfix/*' ]
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
-    paths:
-      - web/**
+    # paths:
+    #   - web/**
   pull_request:
     types: [opened, reopened, synchronize]
     branches: [dev, master, main,'hotfix/*']
