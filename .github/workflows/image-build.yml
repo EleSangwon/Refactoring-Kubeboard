@@ -1,0 +1,62 @@
+name: Image Build
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+on:
+  push:
+    branches: [ dev, master, 'hotfix/*' ]
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
+    paths:
+      - frontend/**
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [dev, master, main,'hotfix/*']
+    tags-ignore:
+      - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
+
+jobs:
+  set-Environment:
+    runs-on: ubuntu-latest
+    outputs:
+      env: ${{ steps.var.outputs.environment }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: check ref
+        run: |
+          echo "REF_NAME: ${{ github.ref_name }}"
+          echo "HEAD_REF_NAME: ${{ github.head_ref }}"
+      - name: output env
+        id: var
+        run: |
+          REF=${{ github.ref_name }}
+          echo ::set-output name=environment::$( echo "dev" )
+          if [[ ${REF} =~ "master" ]]; then
+            echo ::set-output name=environment::$( echo "prod" )
+            echo "This branch : ${REF}"
+          fi
+
+  build:
+    runs-on: ubuntu-latest
+    needs: set-Environment
+    strategy:
+      matrix:
+        environment: ["${{ needs.set-Environment.outputs.environment }}"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
