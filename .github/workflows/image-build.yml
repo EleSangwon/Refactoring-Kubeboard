@@ -18,24 +18,24 @@ on:
 
 jobs:
   set-Environment:
-  runs-on: ubuntu-latest
-  outputs:
-    env: ${{ steps.var.outputs.environment }}
+    runs-on: ubuntu-latest
+    outputs:
+      env: ${{ steps.var.outputs.environment }}
     steps:
-    - uses: actions/checkout@v2
-    - name: check ref
-      run: |
-        echo "REF_NAME: ${{ github.ref_name }}"
-        echo "HEAD_REF_NAME: ${{ github.head_ref }}"
-    - name: output env
-      id: var
-      run: |
-        REF=${{ github.ref_name }}
-        echo ::set-output name=environment::$( echo "dev" )
-        if [[ ${REF} =~ "master" ]]; then
-          echo ::set-output name=environment::$( echo "prod" )
-          echo "This branch : ${REF}"
-        fi
+      - uses: actions/checkout@v2
+      - name: check ref
+        run: |
+          echo "REF_NAME: ${{ github.ref_name }}"
+          echo "HEAD_REF_NAME: ${{ github.head_ref }}"
+      - name: output env
+        id: var
+        run: |
+          REF=${{ github.ref_name }}
+          echo ::set-output name=environment::$( echo "dev" )
+          if [[ ${REF} =~ "master" ]]; then
+            echo ::set-output name=environment::$( echo "prod" )
+            echo "This branch : ${REF}"
+          fi
 
   build:
     runs-on: ubuntu-latest
