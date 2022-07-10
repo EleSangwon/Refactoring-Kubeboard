@@ -1,4 +1,4 @@
-module "eks" {
+module "eks_cluster" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 18.0"
 
@@ -18,14 +18,14 @@ module "eks" {
     }
   }
 
-  vpc_id     = "vpc-732c3614"
-  subnet_ids = ["subnet-f08294ab", "subnet-a4e7498f", "subnet-96e740de"]
+  vpc_id     = var.vpc_id
+  subnet_ids = var.private_subnets_by_az
 
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
     disk_size      = 50
-    instance_types = ["t3.small"]
+    instance_types = [var.node_group_instance_type]
   }
 
   eks_managed_node_groups = {
