@@ -21,9 +21,9 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 dependencies:
-  - name: image
+  - name: image-vul
     version: 0.1.0
-  - name: log
+  - name: log-report
     version: 0.1.0
   - name: main-fe
     version: 0.1.0

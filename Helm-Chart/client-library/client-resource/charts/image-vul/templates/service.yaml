@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Values.imagescansvc }}
+  name: {{ .Values.vulnerability.service.name }}
  # namespace: {{ .Values.frontendns }}
 spec:
   selector:
-    app: {{ .Values.imagescanname }}
+    app: {{ .Values.labels.name }}
   ports:
     - protocol: "TCP"
       port: 80

@@ -3,28 +3,28 @@ kind: Deployment
 metadata:
   name: {{ include "kubeboard.fullname" . }}-vul
   labels:
-    app: {{ .Values.imagescanname }}
+    app: {{ .Values.labels.name }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.imagescanname }}
+      app: {{ .Values.labels.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.imagescanname }}
+        app: {{ .Values.labels.name }}
     spec:
       volumes:
-      - name: {{ .Values.volumename }}
+      - name: {{ .Values.volume.pvname }}
         persistentVolumeClaim:
-          claimName: {{ .Values.volumeclaimName }}
+          claimName: {{ .Values.volume.pvcname }}
       containers:
-      - name: {{ .Values.imagescanname }}
+      - name: {{ include "kubeboard.fullname" . }}-vul
         image: {{ .Values.imagescanimage }}
         resources:
           requests:
             cpu: {{ .Values.cpu }}
             memory: {{ .Values.memory }}
         volumeMounts:
-        - name: {{ .Values.volumename }}
-          mountPath: {{ .Values.mountPath }}
+        - name: {{ .Values.volume.pvname }}
+          mountPath: {{ .Values.volume.mountpath }}

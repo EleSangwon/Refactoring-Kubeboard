@@ -4,28 +4,28 @@ metadata:
   name: {{ include "kubeboard.fullname" . }}-log
   #namespace: {{ .Values.frontendns }}
   labels:
-    app: {{ .Values.logreportname }}
+    app: {{ .Values.labels.name }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.logreportname }}
+      app: {{ .Values.labels.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.logreportname }}
+        app: {{ .Values.labels.name }}
     spec:
       volumes:
-      - name: {{ .Values.volumename }}
+      - name: {{ .Values.volume.pvname }}
         persistentVolumeClaim:
-          claimName: {{ .Values.volumeclaimName }}
+          claimName: {{ .Values.volume.pvcname }}
       containers:
-      - name: {{ .Values.logreportname }}
-        image: {{ .Values.logreportimage }}
+      - name: {{ include "kubeboard.fullname" . }}-log
+        image: {{ .Values.logreport.image }}
         resources:
           requests:
             cpu: {{ .Values.cpu }}
             memory: {{ .Values.memory }}
         volumeMounts:
-        - name: {{ .Values.volumename }}
-          mountPath: {{ .Values.mountPath }}
+        - name: {{ .Values.volume.pvname }}
+          mountPath: {{ .Values.volume.mountpath }}

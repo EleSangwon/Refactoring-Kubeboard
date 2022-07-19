@@ -1,0 +1,26 @@
+## Volume
+volumename: kubeboard-pv
+volumeclaimName: kubeboard-pvc
+mountPath: /client-resource
+
+volume:
+  pvname: kubeboard-pv
+  pvcname: kubeboard-pvc
+  mountpath: /client-resource
+
+vulnerability:
+  deployment:
+    name: deploy-image-scanner
+  hpa:
+    name: hpa-image-scanner
+  cronjob:
+    name: cron-image-scanner
+  service:
+    name: svc-image-scanner
+  image: 238856124133.dkr.ecr.ap-northeast-1.amazonaws.com/private-cronjob-image-scanner:latest
+
+labels:
+  name: label-image-vul
+# resource
+cpu: "100m"
+memory: "256Mi"

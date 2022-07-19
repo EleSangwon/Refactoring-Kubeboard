@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Values.logsvc }}
+  name: {{ .Values.frontend.service.name }}
  # namespace: {{ .Values.frontendns }}
 spec:
   selector:
-    app: {{ .Values.logreportname }}
+    app: {{ .Values.labels.name }}
   ports:
     - protocol: "TCP"
       port: 80

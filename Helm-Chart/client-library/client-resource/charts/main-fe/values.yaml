@@ -1,0 +1,26 @@
+## Volume
+volumename: kubeboard-pv
+volumeclaimName: kubeboard-pvc
+mountPath: /client-resource
+
+volume:
+  pvname: kubeboard-pv
+  pvcname: kubeboard-pvc
+  mountpath: /client-resource
+
+frontend:
+  deployment:
+    name: deploy-main-fe
+  hpa:
+    name: hpa-main-fe
+  cronjob:
+    name: cron-main-fe
+  service:
+    name: svc-main-fe
+  image: 238856124133.dkr.ecr.ap-northeast-1.amazonaws.com/private-cronjob-image-scanner:latest
+
+labels:
+  name: label-main-fe
+# resource
+cpu: "100m"
+memory: "256Mi"
