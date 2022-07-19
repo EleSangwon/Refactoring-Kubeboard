@@ -1,0 +1,149 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.cronjobnode }}
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: {{ .Values.volumename }}
+            persistentVolumeClaim:
+              claimName: {{ .Values.volumeclaimName }}
+          restartPolicy: OnFailure
+          serviceAccountName: {{ .Values.saname }}
+          containers:
+          - name: {{ .Values.nodename }}
+            image: {{ .Values.nodeimage }}
+            command: ["sh","-c"]
+            args: ["python node.py > /client-resource/node_resource.json"]
+            volumeMounts:
+            - name: {{ .Values.volumename }}
+              mountPath: {{ .Values.mountPath }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.cronjobpod }}
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: {{ .Values.volumename }}
+            persistentVolumeClaim:
+              claimName: {{ .Values.volumeclaimName }}
+          restartPolicy: OnFailure
+          serviceAccountName: {{ .Values.saname }}
+          containers:
+          - name: {{ .Values.podname }}
+            image: {{ .Values.podimage }}
+            command: ["sh","-c"]
+            args: ["python pod.py > /client-resource/pod_resource.json"]
+            volumeMounts:
+            - name: {{ .Values.volumename }}
+              mountPath: {{ .Values.mountPath }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.cronjobsvc }}
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: {{ .Values.volumename }}
+            persistentVolumeClaim:
+              claimName: {{ .Values.volumeclaimName }}
+          restartPolicy: OnFailure
+          serviceAccountName: {{ .Values.saname }}
+          containers:
+          - name: {{ .Values.svcname }}
+            image: {{ .Values.svcimage }}
+            command: ["sh","-c"]
+            args: ["python service.py > /client-resource/service_resource.json"]
+            volumeMounts:
+            - name: {{ .Values.volumename }}
+              mountPath: {{ .Values.mountPath }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.cronjobns }}
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: {{ .Values.volumename }}
+            persistentVolumeClaim:
+              claimName: {{ .Values.volumeclaimName }}
+          restartPolicy: OnFailure
+          serviceAccountName: {{ .Values.saname }}
+          containers:
+          - name: {{ .Values.nsname }}
+            image: {{ .Values.nsimage }}
+            command: ["sh","-c"]
+            args: ["python ns.py > /client-resource/ns_resource.json"]
+            volumeMounts:
+            - name: {{ .Values.volumename }}
+              mountPath: {{ .Values.mountPath }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.logreportjob }}
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: {{ .Values.volumename }}
+            persistentVolumeClaim:
+              claimName: {{ .Values.volumeclaimName }}
+          serviceAccountName: {{ .Values.sapodiam }}
+          restartPolicy: OnFailure
+          containers:
+          - name: {{ .Values.logreportjob }}
+            image: {{ .Values.logerrorimage }}
+            command: ["sh","-c"]
+            args: ["python pod-search-s3-file.py > /client-resource/log-test.txt"]
+            volumeMounts:
+            - name: {{ .Values.volumename }}
+              mountPath: {{ .Values.mountPath }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.imagescanjob }}
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: {{ .Values.volumename }}
+            persistentVolumeClaim:
+              claimName: {{ .Values.volumeclaimName }}
+          serviceAccountName: {{ .Values.sapodiam }}
+          restartPolicy: OnFailure
+          containers:
+          - name: {{ .Values.imagescanjob }}
+            image: {{ .Values.imagescannerimage }}
+            command: ["sh","-c"]
+            args: ["python image-scanner.py > /client-resource/image-scanner.txt"]
+            volumeMounts:
+            - name: {{ .Values.volumename }}
+              mountPath: {{ .Values.mountPath }}
