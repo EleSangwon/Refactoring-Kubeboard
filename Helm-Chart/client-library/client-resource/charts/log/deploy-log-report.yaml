@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kubeboard.fullname" . }}-log
+  #namespace: {{ .Values.frontendns }}
+  labels:
+    app: {{ .Values.logreportname }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.logreportname }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.logreportname }}
+    spec:
+      volumes:
+      - name: {{ .Values.volumename }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volumeclaimName }}
+      containers:
+      - name: {{ .Values.logreportname }}
+        image: {{ .Values.logreportimage }}
+        resources:
+          requests:
+            cpu: {{ .Values.cpu }}
+            memory: {{ .Values.memory }}
+        volumeMounts:
+        - name: {{ .Values.volumename }}
+          mountPath: {{ .Values.mountPath }}
