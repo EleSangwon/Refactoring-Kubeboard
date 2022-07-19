@@ -1,7 +1,7 @@
 #!/bin/bash
 cat << END
 Description : This Script is for the Refactoring Kubeboard project.
-Usage       : For AWS EKS, Install kubectl, eksctl, awscli2
+Usage       : For AWS EKS, Install kubectl, eksctl, awscli2, terraform
 OS          : amazon linux2
 Author      : "sangwon lee" <lee2155507@gmail.com>
 
@@ -45,13 +45,21 @@ source ~/.bashrc
 aws --version
 echo "Install awscli2 success."
 }
-
+Terraform(){
+    echo "Install Terraform"
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    sudo yum -y install terraform
+    terraform -help
+}
 BAR="===================================="
 echo "${BAR}"
 echo "What do you want ? "
 echo "${BAR}"
 echo "[0] Install kubectl & eksctl"
 echo "[1] Install Amazon CLI2"
+echo "[2] Install Terraform"
+
 echo "${BAR}"
 echo -n "Please insert a key as you need = "
 read choice
@@ -59,6 +67,7 @@ echo "${BAR}"
 case $choice in
         0) K8s;;
         1) Awscli;;
+        2) Terraform;;
         *) echo "Bad choice"
                 exit 1
 esac
