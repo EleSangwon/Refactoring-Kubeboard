@@ -1,7 +1,7 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.clusterrolenode }}
+  name: {{ .Values.clusterrole.node.name }}
 rules:
 - apiGroups: [""]
   resources: ["nodes"]
@@ -10,10 +10,10 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.clusterrolenode }}
+  name: {{ .Values.clusterrole.node.name }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.saname }}
+  name: {{ .Values.serviceaccount.chart.name }}
   namespace: default
 roleRef:
   kind: ClusterRole
@@ -32,20 +32,20 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.clusterrolens }}
+  name: {{ .Values.clusterrole.namespace.name }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.saname }}
+  name: {{ .Values.serviceaccount.chart.name }}
   namespace: default
 roleRef:
   kind: ClusterRole
-  name: {{ .Values.clusterrolens }}
+  name: {{ .Values.clusterrole.namespace.name }}
   apiGroup: rbac.authorization.k8s.io
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.clusterrolepod }}
+  name: {{ .Values.clusterrole.pod.name }}
 rules:
 - apiGroups: [""]
   resources: ["pods"]
@@ -54,20 +54,20 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.clusterrolepod }}
+  name: {{ .Values.clusterrole.pod.name }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.saname }}
+  name: {{ .Values.serviceaccount.chart.name }}
   namespace: default
 roleRef:
   kind: ClusterRole
-  name: {{ .Values.clusterrolepod }}
+  name: {{ .Values.clusterrole.pod.name }}
   apiGroup: rbac.authorization.k8s.io
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.clusterrolesvc }}
+  name: {{ .Values.clusterrole.service.name }}
 rules:
 - apiGroups: [""]
   resources: ["services"]
@@ -76,12 +76,12 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.clusterrolesvc }}
+  name:  {{ .Values.clusterrole.service.name }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.saname }}
+  name: {{ .Values.serviceaccount.chart.name }}
   namespace: default
 roleRef:
   kind: ClusterRole
-  name: {{ .Values.clusterrolesvc }}
+  name:  {{ .Values.clusterrole.service.name }}
   apiGroup: rbac.authorization.k8s.io

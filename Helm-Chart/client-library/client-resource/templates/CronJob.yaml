@@ -1,7 +1,7 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1beta1 # node
 kind: CronJob
 metadata:
-  name: {{ .Values.cronjobnode }}
+  name: {{ .Values.cronjob.node.name }}
 spec:
   schedule: "*/3 * * * *"
   jobTemplate:
@@ -9,24 +9,24 @@ spec:
       template:
         spec:
           volumes:
-          - name: {{ .Values.volumename }}
+          - name: {{ .Values.volume.pvname }}
             persistentVolumeClaim:
-              claimName: {{ .Values.volumeclaimName }}
+              claimName: {{ .Values.volume.pvcname }}
           restartPolicy: OnFailure
           serviceAccountName: {{ .Values.saname }}
           containers:
-          - name: {{ .Values.nodename }}
-            image: {{ .Values.nodeimage }}
+          - name: {{ .Values.cronjob.node.name }}
+            image: {{ .Values.cronjob.node.image }}
             command: ["sh","-c"]
             args: ["python node.py > /client-resource/node_resource.json"]
             volumeMounts:
-            - name: {{ .Values.volumename }}
-              mountPath: {{ .Values.mountPath }}
+            - name: {{ .Values.volume.pvname }}
+              mountPath: {{ .Values.volume.mountpath }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1beta1 # pod
 kind: CronJob
 metadata:
-  name: {{ .Values.cronjobpod }}
+  name: {{ .Values.cronjob.pod.name }}
 spec:
   schedule: "*/3 * * * *"
   jobTemplate:
@@ -34,24 +34,24 @@ spec:
       template:
         spec:
           volumes:
-          - name: {{ .Values.volumename }}
+          - name: {{ .Values.volume.pvname }}
             persistentVolumeClaim:
-              claimName: {{ .Values.volumeclaimName }}
+              claimName: {{ .Values.volume.pvcname }}
           restartPolicy: OnFailure
           serviceAccountName: {{ .Values.saname }}
           containers:
-          - name: {{ .Values.podname }}
-            image: {{ .Values.podimage }}
+          - name: {{ .Values.cronjob.pod.name }}
+            image: {{ .Values.cronjob.pod.image }}
             command: ["sh","-c"]
             args: ["python pod.py > /client-resource/pod_resource.json"]
             volumeMounts:
-            - name: {{ .Values.volumename }}
-              mountPath: {{ .Values.mountPath }}
+            - name: {{ .Values.volume.pvname }}
+              mountPath: {{ .Values.volume.mountpath }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1beta1 # service
 kind: CronJob
 metadata:
-  name: {{ .Values.cronjobsvc }}
+  name: {{ .Values.cronjob.service.name }}
 spec:
   schedule: "*/3 * * * *"
   jobTemplate:
@@ -59,24 +59,24 @@ spec:
       template:
         spec:
           volumes:
-          - name: {{ .Values.volumename }}
+          - name: {{ .Values.volume.pvname }}
             persistentVolumeClaim:
-              claimName: {{ .Values.volumeclaimName }}
+              claimName: {{ .Values.volume.pvcname }}
           restartPolicy: OnFailure
           serviceAccountName: {{ .Values.saname }}
           containers:
-          - name: {{ .Values.svcname }}
-            image: {{ .Values.svcimage }}
+          - name: {{ .Values.cronjob.service.name }}
+            image: {{ .Values.cronjob.service.image }}
             command: ["sh","-c"]
             args: ["python service.py > /client-resource/service_resource.json"]
             volumeMounts:
-            - name: {{ .Values.volumename }}
-              mountPath: {{ .Values.mountPath }}
+            - name: {{ .Values.volume.pvname }}
+              mountPath: {{ .Values.volume.mountpath }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1beta1 # namespace
 kind: CronJob
 metadata:
-  name: {{ .Values.cronjobns }}
+  name: {{ .Values.cronjob.namespace.name }}
 spec:
   schedule: "*/3 * * * *"
   jobTemplate:
@@ -84,24 +84,24 @@ spec:
       template:
         spec:
           volumes:
-          - name: {{ .Values.volumename }}
+          - name: {{ .Values.volume.pvname }}
             persistentVolumeClaim:
-              claimName: {{ .Values.volumeclaimName }}
+              claimName: {{ .Values.volume.pvcname }}
           restartPolicy: OnFailure
           serviceAccountName: {{ .Values.saname }}
           containers:
-          - name: {{ .Values.nsname }}
-            image: {{ .Values.nsimage }}
+          - name: {{ .Values.cronjob.namespace.name }}
+            image: {{ .Values.cronjob.namespace.image }}
             command: ["sh","-c"]
             args: ["python ns.py > /client-resource/ns_resource.json"]
             volumeMounts:
-            - name: {{ .Values.volumename }}
-              mountPath: {{ .Values.mountPath }}
+            - name: {{ .Values.volume.pvname }}
+              mountPath: {{ .Values.volume.mountpath }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1beta1 # log-report
 kind: CronJob
 metadata:
-  name: {{ .Values.logreportjob }}
+  name: {{ .Values.cronjob.logreport.name }}
 spec:
   schedule: "*/3 * * * *"
   jobTemplate:
@@ -109,24 +109,24 @@ spec:
       template:
         spec:
           volumes:
-          - name: {{ .Values.volumename }}
+          - name: {{ .Values.volume.pvname }}
             persistentVolumeClaim:
-              claimName: {{ .Values.volumeclaimName }}
+              claimName: {{ .Values.volume.pvcname }}
           serviceAccountName: {{ .Values.sapodiam }}
           restartPolicy: OnFailure
           containers:
-          - name: {{ .Values.logreportjob }}
-            image: {{ .Values.logerrorimage }}
+          - name: {{ .Values.cronjob.logreport.name }}
+            image: {{ .Values.cronjob.logreport.image }}
             command: ["sh","-c"]
             args: ["python pod-search-s3-file.py > /client-resource/log-test.txt"]
             volumeMounts:
-            - name: {{ .Values.volumename }}
-              mountPath: {{ .Values.mountPath }}
+            - name: {{ .Values.volume.pvname }}
+              mountPath: {{ .Values.volume.mountpath }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1beta1 # image-vul /alias=vulnerability
 kind: CronJob
 metadata:
-  name: {{ .Values.imagescanjob }}
+  name: {{ .Values.cronjob.vulnerability.name }}
 spec:
   schedule: "*/3 * * * *"
   jobTemplate:
@@ -134,16 +134,16 @@ spec:
       template:
         spec:
           volumes:
-          - name: {{ .Values.volumename }}
+          - name: {{ .Values.volume.pvname }}
             persistentVolumeClaim:
-              claimName: {{ .Values.volumeclaimName }}
+              claimName: {{ .Values.volume.pvcname }}
           serviceAccountName: {{ .Values.sapodiam }}
           restartPolicy: OnFailure
           containers:
-          - name: {{ .Values.imagescanjob }}
-            image: {{ .Values.imagescannerimage }}
+          - name: {{ .Values.cronjob.vulnerability.name }}
+            image: {{ .Values.cronjob.vulnerability.image }}
             command: ["sh","-c"]
             args: ["python image-scanner.py > /client-resource/image-scanner.txt"]
             volumeMounts:
-            - name: {{ .Values.volumename }}
-              mountPath: {{ .Values.mountPath }}
+            - name: {{ .Values.volume.pvname }}
+              mountPath: {{ .Values.volume.mountpath }}
