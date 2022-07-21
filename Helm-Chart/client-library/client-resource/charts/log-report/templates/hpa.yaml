@@ -1,12 +1,8 @@
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
+{{- define "kubeboard.logreporthpa" -}}
 metadata:
-  name: {{ .Values.logreport.hpa.name }}
+  name: {{ include "kubeboard.fullname" . }}-log-report-hpa
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: {{ include "kubeboard.fullname" . }}-log
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
+    name: {{ include "kubeboard.fullname" . }}-log-report
+{{- end -}}
+{{- include "kubeboard.hpa" (list . "kubeboard.logreporthpa" ) }}

@@ -1,30 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+{{- define "kubeboard.mainfe" -}}
 metadata:
-  name: {{ include "kubeboard.fullname" . }}-fe
-  labels:
-    app: {{ .Values.labels.name }}
-spec:
-  replicas: {{ .Values.replicas }}
-  selector:
-    matchLabels:
-      app: {{ .Values.labels.name }}
-  template:
-    metadata:
-      labels:
-        app: {{ .Values.labels.name }}
-    spec:
-      volumes:
-      - name: {{ .Values.volume.pvname }}
-        persistentVolumeClaim:
-          claimName: {{ .Values.volume.pvcname }}
-      containers:
-      - name: {{ include "kubeboard.fullname" . }}-fe
-        image: {{ .Values.frontend.image }}
-        resources:
-          requests:
-            cpu: {{ .Values.cpu }}
-            memory: {{ .Values.memory }}
-        volumeMounts:
-        - name: {{ .Values.volume.pvname }}
-          mountPath: {{ .Values.volume.mountpath }}
+  name: {{ include "kubeboard.fullname" . }}-main-fe
+{{- end -}}
+{{- include "kubeboard.deployment" (list . "kubeboard.mainfe" ) }}

@@ -1,0 +1,21 @@
+{{- define "kubeboard.service.tpl" -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kubeboard.fullname" . }}
+  labels:
+    {{- include "kubeboard.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 80
+      protocol: TCP
+  selector:
+    {{- include "kubeboard.selectorLabels" . | nindent 4 }}
+{{- end }}
+
+{{- define "kubeboard.service" -}}
+{{- include "kubeboard.util.merge" (append . "kubeboard.service.tpl") -}}
+{{- end -}}

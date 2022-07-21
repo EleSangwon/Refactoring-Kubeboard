@@ -1,12 +1,8 @@
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
+{{- define "kubeboard.vulhpa" -}}
 metadata:
-  name: {{ .Values.vulnerability.hpa.name }}
+  name: {{ include "kubeboard.fullname" . }}-vul-hpa
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: {{ include "kubeboard.fullname" . }}-vul
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
+    name: {{ include "kubeboard.fullname" . }}-vul-hpa
+{{- end -}}
+{{- include "kubeboard.hpa" (list . "kubeboard.vulhpa" ) }}

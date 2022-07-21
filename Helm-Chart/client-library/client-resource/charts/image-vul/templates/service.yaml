@@ -1,13 +1,10 @@
-kind: Service
-apiVersion: v1
+{{- define "kubeboard.vulservice" -}}
 metadata:
-  name: {{ .Values.vulnerability.service.name }}
- # namespace: {{ .Values.frontendns }}
+  name: {{ include "kubeboard.fullname" . }}-vul-svc
 spec:
-  selector:
-    app: {{ .Values.labels.name }}
   ports:
-    - protocol: "TCP"
-      port: 80
+    - port: 80
       targetPort: 80
-  type: ClusterIP
+      protocol: TCP
+{{- end -}}
+{{- include "kubeboard.service" (list . "kubeboard.vulservice" ) }}
