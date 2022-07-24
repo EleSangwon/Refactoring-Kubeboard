@@ -8,8 +8,8 @@ on:
     branches: [ dev, master, 'hotfix/*' ]
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
-    # paths:
-    #   - frontend/**
+    paths:
+      - frontend/**
   pull_request:
     types: [opened, reopened, synchronize]
     branches: [dev, master, main,'hotfix/*']
@@ -17,34 +17,11 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
 
 jobs:
-  set-environment:
+  set-env:
     runs-on: ubuntu-latest
     outputs:
-      env: ${{ steps.var.outputs.environment }}
+      env: ${{ steps.set.outputs.deploy_env }}
     steps:
-      - uses: actions/checkout@v2
-      - name: check ref
-        run: |
-          echo "REF_NAME: ${{ github.ref_name }}"
-          echo "HEAD_REF_NAME: ${{ github.head_ref }}"
-      - name: output env
-        id: var
-        run: |
-          REF=${{ github.ref_name }}
-          echo ::set-output name=environment::$( echo "dev" )
-          if [[ ${REF} =~ "master" ]]; then
-            echo ::set-output name=environment::$( echo "prod" )
-            echo "This branch : ${REF}"
-          fi
-
-  build:
-    runs-on: ubuntu-latest
-    needs: set-environment
-    strategy:
-      matrix:
-        environment: ["${{ needs.set-environment.outputs.environment }}"]
-    steps:
-      steps:
       - name: fetch actions repo
         uses: actions/checkout@v3
         with:
@@ -52,16 +29,39 @@ jobs:
           path: "./actions"
           token: ${{ secrets.GH_PAT }}
           ref: main
-      - name: file list
+      - name: Use set environment
+        uses: "./actions/common/set-environment"
+        id: set
+        with:
+          ref: ${{ github.ref_name }}
+          head_ref: ${{ github.head_ref }}
+          type: ${{ github.ref_type }}
+
+  build:
+    runs-on: ubuntu-latest
+    needs: set-env
+    strategy:
+      matrix:
+        environment: ["${{ needs.set-env.outputs.env }}"]
+    environment: ${{ matrix.environment }}
+    steps:
+      - name: check env
         run: |
-          ls -al
-      # - name: aws credentials
-      #   uses: "./actions/common/aws/credentials"
+          echo ${{ needs.set-env.outputs.env }}
+      - name: fetch actions repo
+        uses: actions/checkout@v3
+        with:
+          repository: "EleSangwon/github-action-module"
+          path: "./actions"
+          token: ${{ secrets.GH_PAT }}
+          ref: main
+      # - name: Use aws credentials
+      #   uses: "./actions/common/aws/credential"
       #   with:
       #     role-arn: ${{ secrets.AWS_ROLE_ARN }}
-      # - name: Use docker build action
-      #   uses: "./actions/common/build/docker"
+      # - name: Use docker build
+      #   uses: "./actions/common/docker"
       #   with:
-      #     repository: ${{ secrets.ecr }}
+      #     repository: ${{ secrets.ECR_REPOSITORY }}
       #     registry: ${{ secrets.ECR_REGISTRY }}
       #     dockerfile: ./Dockerfile
