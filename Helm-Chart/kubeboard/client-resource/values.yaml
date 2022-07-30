@@ -29,7 +29,7 @@ serviceaccount:
     name: pod-iam
     rolearn: ""
   chart:
-    name: kubeboard-chart
+    name: kubeboard
 
 # Ingress
 ingress:
@@ -53,4 +53,3 @@ clusterrole:
     name: rbac-ns
   node:
     name: rbac-node
-
