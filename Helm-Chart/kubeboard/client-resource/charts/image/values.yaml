@@ -23,8 +23,12 @@ labels:
   name: label-image-vul
 
 resources:
-  cpu: "100m"
-  memory: "256Mi"
+  limits:
+    cpu: "200m"
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
 
 autoscaling:
   enabled: false
