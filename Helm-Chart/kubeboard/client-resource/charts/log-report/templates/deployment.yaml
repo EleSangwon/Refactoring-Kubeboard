@@ -1,0 +1,5 @@
+{{- define "common.logreport" -}}
+metadata:
+  name: {{ include "common.fullname" . }}-log-report
+{{- end -}}
+{{- include "common.deployment" (list . "common.logreport" ) }}

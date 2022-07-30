@@ -1,5 +1,0 @@
-{{- define "kubeboard.mainfe" -}}
-metadata:
-  name: {{ include "kubeboard.fullname" . }}-main-fe
-{{- end -}}
-{{- include "kubeboard.deployment" (list . "kubeboard.mainfe" ) }}

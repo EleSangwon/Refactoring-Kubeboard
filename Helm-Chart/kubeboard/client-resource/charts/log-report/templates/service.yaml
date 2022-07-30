@@ -1,0 +1,10 @@
+{{- define "common.logreportservice" -}}
+metadata:
+  name: {{ include "common.fullname" . }}-log-report-svc
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+{{- end -}}
+{{- include "common.service" (list . "common.logreportservice" ) }}

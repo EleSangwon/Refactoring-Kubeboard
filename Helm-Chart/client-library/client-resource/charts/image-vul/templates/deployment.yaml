@@ -1,5 +1,0 @@
-{{- define "kubeboard.vul" -}}
-metadata:
-  name: {{ include "kubeboard.fullname" . }}-vul
-{{- end -}}
-{{- include "kubeboard.deployment" (list . "kubeboard.vul" ) }}

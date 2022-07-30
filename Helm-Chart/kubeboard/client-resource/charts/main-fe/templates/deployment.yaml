@@ -1,0 +1,5 @@
+{{- define "common.mainfe" -}}
+metadata:
+  name: {{ include "common.fullname" . }}-main-fe
+{{- end -}}
+{{- include "common.deployment" (list . "common.mainfe" ) }}

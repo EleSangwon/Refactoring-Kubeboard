@@ -1,8 +1,0 @@
-{{- define "kubeboard.mainfehpa" -}}
-metadata:
-  name: {{ include "kubeboard.fullname" . }}-main-fe-hpa
-spec:
-  scaleTargetRef:
-    name: {{ include "kubeboard.fullname" . }}-main-fe
-{{- end -}}
-{{- include "kubeboard.hpa" (list . "kubeboard.mainfehpa" ) }}

@@ -1,8 +1,0 @@
-{{- define "kubeboard.logreporthpa" -}}
-metadata:
-  name: {{ include "kubeboard.fullname" . }}-log-report-hpa
-spec:
-  scaleTargetRef:
-    name: {{ include "kubeboard.fullname" . }}-log-report
-{{- end -}}
-{{- include "kubeboard.hpa" (list . "kubeboard.logreporthpa" ) }}

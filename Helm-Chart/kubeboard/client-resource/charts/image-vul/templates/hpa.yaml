@@ -1,0 +1,8 @@
+{{- define "common.vulhpa" -}}
+metadata:
+  name: {{ include "common.fullname" . }}-vul-hpa
+spec:
+  scaleTargetRef:
+    name: {{ include "common.fullname" . }}-vul-hpa
+{{- end -}}
+{{- include "common.hpa" (list . "common.vulhpa" ) }}

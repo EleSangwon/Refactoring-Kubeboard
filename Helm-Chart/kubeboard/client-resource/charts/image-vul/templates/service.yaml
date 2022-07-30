@@ -1,0 +1,10 @@
+{{- define "common.vulservice" -}}
+metadata:
+  name: {{ include "common.fullname" . }}-vul-svc
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+{{- end -}}
+{{- include "common.service" (list . "common.vulservice" ) }}

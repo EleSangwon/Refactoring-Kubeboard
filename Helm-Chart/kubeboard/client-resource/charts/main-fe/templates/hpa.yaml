@@ -1,0 +1,8 @@
+{{- define "common.mainfehpa" -}}
+metadata:
+  name: {{ include "common.fullname" . }}-main-fe-hpa
+spec:
+  scaleTargetRef:
+    name: {{ include "common.fullname" . }}-main-fe
+{{- end -}}
+{{- include "common.hpa" (list . "common.mainfehpa" ) }}

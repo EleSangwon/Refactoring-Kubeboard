@@ -1,0 +1,5 @@
+{{- define "common.vul" -}}
+metadata:
+  name: {{ include "common.fullname" . }}-vul
+{{- end -}}
+{{- include "common.deployment" (list . "common.vul" ) }}

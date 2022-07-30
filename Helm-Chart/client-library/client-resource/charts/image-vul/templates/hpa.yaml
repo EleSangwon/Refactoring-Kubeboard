@@ -1,8 +1,0 @@
-{{- define "kubeboard.vulhpa" -}}
-metadata:
-  name: {{ include "kubeboard.fullname" . }}-vul-hpa
-spec:
-  scaleTargetRef:
-    name: {{ include "kubeboard.fullname" . }}-vul-hpa
-{{- end -}}
-{{- include "kubeboard.hpa" (list . "kubeboard.vulhpa" ) }}
